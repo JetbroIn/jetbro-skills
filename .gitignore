@@ -1,0 +1,3 @@
+# write-issues sticky-mode flag files (session-scoped, never committed)
+.claude/.write-issues-mode*
+.DS_Store

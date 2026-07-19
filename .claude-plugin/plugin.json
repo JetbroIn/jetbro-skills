@@ -1,0 +1,15 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-plugin-manifest.json",
+  "name": "jetbro-skills",
+  "displayName": "Jetbro Skills",
+  "description": "Team skills for driving GitHub-issue development on phlo client projects — board-aware, background-parallel, house-style aware.",
+  "author": {
+    "name": "Jetbro",
+    "url": "https://github.com/JetbroIn"
+  },
+  "homepage": "https://github.com/JetbroIn/jetbro-skills",
+  "repository": "https://github.com/JetbroIn/jetbro-skills",
+  "license": "MIT",
+  "keywords": ["phlo", "github-projects", "workflow", "issues", "automation"],
+  "hooks": "./hooks/hooks.json"
+}

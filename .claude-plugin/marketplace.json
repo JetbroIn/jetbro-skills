@@ -1,0 +1,16 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-marketplace.json",
+  "name": "jetbro-skills",
+  "owner": {
+    "name": "Jetbro",
+    "url": "https://github.com/JetbroIn"
+  },
+  "description": "Jetbro's team plugin — a growing collection of Claude Code skills for phlo project work.",
+  "plugins": [
+    {
+      "name": "jetbro-skills",
+      "source": "./",
+      "description": "Board-aware GitHub-issue workflow skills for phlo client projects."
+    }
+  ]
+}
