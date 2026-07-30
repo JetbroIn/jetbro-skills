@@ -9,8 +9,21 @@
   "plugins": [
     {
       "name": "jetbro-skills",
-      "source": "./",
-      "description": "Board-aware GitHub-issue workflow skills for phlo client projects."
+      "displayName": "Jetbro Skills",
+      "version": "1.0.0",
+      "source": {
+        "source": "github",
+        "repo": "JetbroIn/jetbro-skills"
+      },
+      "description": "Board-aware GitHub-issue workflow skills for phlo client projects.",
+      "author": {
+        "name": "Jetbro",
+        "url": "https://github.com/JetbroIn"
+      },
+      "homepage": "https://github.com/JetbroIn/jetbro-skills",
+      "license": "MIT",
+      "category": "workflow",
+      "keywords": ["phlo", "github-projects", "workflow", "issues", "automation"]
     }
   ]
 }
