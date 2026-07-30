@@ -10,6 +10,5 @@
   "homepage": "https://github.com/JetbroIn/jetbro-skills",
   "repository": "https://github.com/JetbroIn/jetbro-skills",
   "license": "MIT",
-  "keywords": ["phlo", "github-projects", "workflow", "issues", "automation"],
-  "hooks": "./hooks/hooks.json"
+  "keywords": ["phlo", "github-projects", "workflow", "issues", "automation"]
 }
