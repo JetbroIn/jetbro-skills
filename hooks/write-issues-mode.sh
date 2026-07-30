@@ -6,15 +6,23 @@
 
 set -euo pipefail
 
-# Session-scoped flag dir. Prefer a per-session id so the mode never leaks
-# between concurrent sessions; fall back to the project dir if unset.
-sid="${CLAUDE_SESSION_ID:-}"
-base="${CLAUDE_PROJECT_DIR:-$PWD}/.claude"
-if [ -n "$sid" ]; then
-  flag="$base/.write-issues-mode.$sid"
-else
-  flag="$base/.write-issues-mode"
+# Session-scoped flag. The session id is ONLY available on stdin for command
+# hooks -- there is no CLAUDE_SESSION_ID env var (see Claude Code hooks docs).
+# Reading the wrong source used to yield an empty id, which collapsed every
+# concurrent session onto one shared project-wide flag and leaked the mode
+# across sessions. Fail CLOSED: no id -> no mode.
+payload=$(cat 2>/dev/null || true)
+
+sid=""
+if [ -n "$payload" ] && command -v jq >/dev/null 2>&1; then
+  sid=$(printf '%s' "$payload" | jq -r '.session_id // empty' 2>/dev/null || true)
 fi
+
+# No resolvable session id -> stay silent rather than risk a cross-session leak.
+[ -n "$sid" ] || exit 0
+
+base="${CLAUDE_PROJECT_DIR:-$PWD}/.claude"
+flag="$base/.write-issues-mode.$sid"
 
 # Mode off -> do nothing, exit clean. (Fast path, hit on most prompts.)
 [ -f "$flag" ] || exit 0

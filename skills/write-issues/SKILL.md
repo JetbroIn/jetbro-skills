@@ -20,24 +20,36 @@ of the pipe — `write-issues` populates the board that `/work-board` later drai
 ## Toggling the mode
 
 The flag file is session-scoped:
-`${CLAUDE_PROJECT_DIR}/.claude/.write-issues-mode.${CLAUDE_SESSION_ID}`
-(falls back to `.write-issues-mode` without a session id).
+`${CLAUDE_PROJECT_DIR}/.claude/.write-issues-mode.${CLAUDE_CODE_SESSION_ID}`
+
+> **Use `CLAUDE_CODE_SESSION_ID`, not `CLAUDE_SESSION_ID`.** Bash tool calls get
+> `CLAUDE_CODE_SESSION_ID`; `CLAUDE_SESSION_ID` does not exist and reading it silently
+> produced an *unsuffixed, project-wide* flag shared by every concurrent session — which
+> leaked the mode into other sessions (e.g. a `/work-board` session in the same project).
+> There is deliberately **no fallback**: if the session id is empty, the mode must refuse
+> to activate rather than go global. The matching hook reads `session_id` from its stdin
+> JSON, which is the only source available to command hooks.
 
 **When this skill is invoked, first check whether the flag exists and toggle it:**
 
 Turn ON (flag absent):
 ```bash
+SID="${CLAUDE_CODE_SESSION_ID:-}"
+if [ -z "$SID" ]; then
+  echo "Cannot enable write-issues mode: no session id available." >&2
+  echo "Refusing to create a project-wide flag that would leak into other sessions." >&2
+  exit 1
+fi
 DIR="${CLAUDE_PROJECT_DIR:-$PWD}/.claude"; mkdir -p "$DIR"
-FLAG="$DIR/.write-issues-mode${CLAUDE_SESSION_ID:+.$CLAUDE_SESSION_ID}"
-touch "$FLAG"
+touch "$DIR/.write-issues-mode.$SID"
 echo "write-issues mode ON — every prompt now authors issues until you toggle off."
 ```
 
 Turn OFF (flag present, or user says stop/exit write-issues mode):
 ```bash
+SID="${CLAUDE_CODE_SESSION_ID:-}"
 DIR="${CLAUDE_PROJECT_DIR:-$PWD}/.claude"
-FLAG="$DIR/.write-issues-mode${CLAUDE_SESSION_ID:+.$CLAUDE_SESSION_ID}"
-rm -f "$FLAG"
+rm -f "$DIR/.write-issues-mode${SID:+.$SID}"
 echo "write-issues mode OFF — back to normal operation."
 ```
 

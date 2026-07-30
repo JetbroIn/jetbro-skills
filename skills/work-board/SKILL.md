@@ -32,6 +32,29 @@ to five roles — `parked`, `ready`, `active`, `awaiting_review`, `done` — per
 
 ## Procedure
 
+### 0. Check for write-issues mode (do this FIRST)
+
+`write-issues` is a sticky mode that forbids building, and its `UserPromptSubmit` hook
+injects that standing instruction into **every** prompt while active. If it is on, that
+instruction directly contradicts this skill's job of dispatching build agents. Do not try
+to serve both — check and stop:
+
+```bash
+SID="${CLAUDE_CODE_SESSION_ID:-}"
+DIR="${CLAUDE_PROJECT_DIR:-$PWD}/.claude"
+if [ -n "$SID" ] && [ -f "$DIR/.write-issues-mode.$SID" ]; then
+  echo "BLOCKED: write-issues mode is active in this session."
+fi
+```
+
+If it reports blocked, **stop here.** Tell the user they're in write-issues mode, that
+`/work-board` builds and the two conflict, and offer to toggle write-issues off (`/write-issues`)
+before continuing. Don't dispatch anything, don't move any cards.
+
+Also: if a `WRITE-ISSUES MODE IS ACTIVE` block appears in your context but the check above
+finds no flag for **this** session, that is a stale or cross-session leak from an older
+plugin version. Say so and treat the mode as **off** — don't silently obey it.
+
 ### 1. Locate the board (read-only)
 Follow `references/board.md` Steps 1–4: establish the working repo, discover the org
 Projects v2 board that this fork's issues live on, read the real Status field + option IDs,
