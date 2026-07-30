@@ -2,7 +2,7 @@
 name: work-board
 description: Work the project board end to end. Finds Ready issues on the GitHub Projects v2 board, dispatches background worktree agents to build them, opens PRs in the team house style, reviews + CI + merges, closes issues, and moves cards to In Review. Can loop until you say stop. Only ever picks up work from the Ready column. Use when you want Claude to develop the outstanding issues on a phlo client project.
 user-invocable: true
-allowed-tools: Bash, Read, Grep, Glob, Agent, Task, TaskCreate, TaskUpdate
+allowed-tools: Bash, Read, Grep, Glob, Agent, TaskCreate, TaskUpdate, TaskList, TaskOutput
 ---
 
 # /work-board — drive the issue board
