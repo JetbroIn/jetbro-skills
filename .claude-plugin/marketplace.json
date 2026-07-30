@@ -12,8 +12,8 @@
       "displayName": "Jetbro Skills",
       "version": "1.0.0",
       "source": {
-        "source": "github",
-        "repo": "JetbroIn/jetbro-skills"
+        "source": "url",
+        "url": "https://github.com/JetbroIn/jetbro-skills.git"
       },
       "description": "Board-aware GitHub-issue workflow skills for phlo client projects.",
       "author": {
