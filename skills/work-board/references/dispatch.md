@@ -20,9 +20,11 @@ worktrees**, so several issues can progress at once and the user can still talk 
 
 Two issues are **likely to conflict** — run them serially — if any of:
 
-- Their titles/bodies point at the **same files, module, or feature area** (e.g. both touch
-  auth, or both touch the sidebar).
-- One **depends on** the other (mentions "after #N", "blocked by", "builds on").
+- Their titles/bodies/**comments** point at the **same files, module, or feature area**
+  (e.g. both touch auth, or both touch the sidebar).
+- One **depends on** the other (mentions "after #N", "blocked by", "builds on") — in the
+  body, in a **comment**, or as a `cross-referenced` timeline event. Dependencies are
+  discovered in discussion far more often than they are written into the body.
 - Both bump the **`framework_version`** or touch shared manifests — version bumps serialize
   by nature (see ship.md). At most one in-flight version bump at a time.
 - They edit the **same migration / schema / config** surface.
@@ -38,8 +40,12 @@ are safe to run in parallel worktrees.
 
 Give the agent a self-contained brief:
 
-- The **repo** (resolved per board.md — not the folder name) and the **issue number + full
-  text**.
+- The **repo** (resolved per board.md — not the folder name) and the **issue number**.
+- The issue's **full record — body, every comment, and the timeline** (`issue-context.md`),
+  not just the body. Either pass the fetched record in the brief or tell the agent to read
+  it first; either way the agent must have the comment history before it writes any code.
+  Scope changes, rejected approaches, and answers to previously-parked questions live in
+  comments, and an agent that skips them builds the wrong thing.
 - Instruction to work in its **own worktree/branch** off the default branch.
 - The full **build → ship** procedure (see ship.md): implement, verify, open PR in house
   style, ensure CI passes, self-review, and — only when confident — merge, close the issue,

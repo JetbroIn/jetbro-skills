@@ -31,11 +31,22 @@ gh issue list --repo OWNER/REPO --state open --limit 100 \
 Also read each issue's current board column (its project item Status) so you can spot
 mis-placed cards.
 
+The list view gives you titles and bodies — enough to *shortlist*, not enough to *decide*.
+Before you flag any issue (duplicate, wrong label, wrong column), read its **full record —
+body, all comments, and the timeline** per `../work-board/references/issue-context.md`.
+Comments are where scope gets cut, duplicates get acknowledged ("dupe of #12, keeping this
+one"), and issues get superseded. Two issues with near-identical bodies may already be
+reconciled in their comments, and an issue that looks mis-filed is often sitting in the
+right column for a reason someone explained in a comment.
+
 ### 3. Analyze — three passes
 
-**Duplicates / overlaps.** Compare titles and bodies for issues describing the same thing
-or heavily overlapping scope. Flag as *likely duplicate of #N* — never assert; the user
-decides. Cluster near-dupes together.
+**Duplicates / overlaps.** Compare titles, bodies **and comments** for issues describing the
+same thing or heavily overlapping scope. Check the timeline for `cross-referenced` events —
+issues that reference each other are often already known dupes. If a comment already
+resolves the overlap ("superseded by #12"), report it as settled rather than re-flagging it.
+Flag as *likely duplicate of #N* — never assert; the user decides. Cluster near-dupes
+together.
 
 **Labels.** For each issue, suggest labels from the repo's **existing** label set based on
 what it is (bug / enhancement / area). Flag issues with *no* labels, and labels that look

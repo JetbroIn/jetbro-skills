@@ -66,21 +66,27 @@ Per `references/board.md` Step 7: the open issues whose card is in the `ready` r
 this repo. Show the user what you found before mutating anything. If nothing is Ready, stop
 here (or idle, if looping).
 
-### 3. Plan for conflicts
+### 3. Read each candidate issue in full
+For every issue you're considering picking up, read its **full record — body, all comments,
+and the timeline** per `references/issue-context.md`. The body is the opening statement, not
+the spec: scope gets narrowed in comments, approaches get rejected in comments, and the
+answer that unparked an issue **is** a comment. Never plan or dispatch off the body alone.
+
+### 4. Plan for conflicts
 Before doing anything, apply the conflict-risk check in `references/dispatch.md`. Decide
 which Ready issues can run in **parallel** worktrees and which must be **serialized**
 (same files/area, dependencies, or a shared `framework_version` bump). When unsure, prefer
 serial.
 
-### 4. Pick up & dispatch
+### 5. Pick up & dispatch
 For each issue you're starting:
 - Move its card to the `active` (In Progress) role — `references/board.md` Step 6.
 - Spawn a **background** build agent in its **own worktree**
-  (`references/dispatch.md`) with a self-contained brief: the resolved repo, the full
-  issue text, and the build→ship procedure. The agent does the coding; this session does
-  **not** build.
+  (`references/dispatch.md`) with a self-contained brief: the resolved repo, the issue's
+  **full record from step 3 (body + comments + timeline)**, and the build→ship procedure.
+  The agent does the coding; this session does **not** build.
 
-### 5. Build → ship (in each background agent)
+### 6. Build → ship (in each background agent)
 Each agent follows `references/ship.md`: implement, self-review, get CI green, do a local
 check when the change has runtime surface, then — only when confident — merge (PR body says
 `Closes #N`, house-style title with the version bump), confirm the issue closed, **leave a
@@ -89,13 +95,13 @@ the card to `awaiting_review` (In Review). Merges are serialized across agents
 (`references/dispatch.md`). Agents **stop at In Review** — a human takes it to Done or
 reopens it.
 
-### 6. Questions → ask or park
+### 7. Questions → ask or park
 If a background agent hits a blocking business/technical question, follow
 `references/park.md`: relay it to the user in this session (one at a time), keep other work
 going, and if it goes unanswered, comment on the issue + move the card to `parked` and stop
 that agent. **Never invent product decisions.**
 
-### 7. Report
+### 8. Report
 Keep the user posted in this session: what got picked up, what merged and moved to In
 Review, what's parked and why, what's still building. Lead with outcomes.
 
@@ -112,6 +118,7 @@ session responsive throughout — the loop is a heartbeat, not a blocker.
 
 ## References
 - `references/board.md` — Projects v2 discovery, fuzzy column mapping, the move mutation (verified GraphQL).
+- `references/issue-context.md` — reading an issue's full record: body + comments + timeline, before any decision.
 - `references/dispatch.md` — background worktree agents, conflict-risk check, merge coordination.
 - `references/ship.md` — PR house style, review, CI, merge, close, move to In Review.
 - `references/park.md` — the ask-or-park policy for blocking questions.
