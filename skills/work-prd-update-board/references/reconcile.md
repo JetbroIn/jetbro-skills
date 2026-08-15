@@ -7,6 +7,11 @@ it actually is, for the part of it this issue touched.
 **The governing principle: the code is right.** The implementation shipped, CI passed, and a
 human reviewed it. Where the PRD and the code disagree, the PRD is what's out of date.
 
+**The issue is already closed, and stays closed.** By the time a card reaches this column the
+code PR has merged with `Closes #N` and a QA has signed it off. You are not building,
+reopening, or revisiting the issue — only describing what it produced. The only thing you
+change in the repo is documentation.
+
 ## 1. Establish the three inputs
 
 Before writing anything, have all three in hand:

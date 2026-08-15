@@ -81,9 +81,22 @@ Don't go hunting the filesystem for something PRD-shaped and don't guess.
 ### 3. List the PRD Update queue (read-only)
 
 Read the board's items and keep those whose Status maps to `prd_update`, from this repo.
-Unlike the Ready queue these are normally **closed** issues (they shipped already), so don't
-filter them out by state. Show the user the list before mutating anything. If it's empty,
-stop here (or idle, if looping).
+
+**Expect these issues to be closed — nearly all of them will be.** They shipped, `work-board`
+merged a PR with `Closes #N`, and a QA reviewed them. A closed issue in this column is the
+normal case, not an anomaly: never skip one for being closed, never reopen one, and never
+flag it as odd in your report.
+
+This is the opposite of `work-board`, whose queue is open issues. Any state filter you carry
+over from that skill is wrong here — list the column's cards regardless of issue state.
+
+An **open** issue sitting in `prd_update` is the unusual one. It normally means the QA
+reopened it (the review found a problem) or moved the card early. Don't reconcile it: leave
+the card alone and flag it to the user, since a reopened issue's code may still change and
+any PRD text you write against it would be stale on arrival.
+
+Show the user the list before mutating anything. If it's empty, stop here (or idle, if
+looping).
 
 ### 4. Read each issue's full record
 
@@ -96,12 +109,21 @@ actually built. That comment is your best starting point for what the PRD needs 
 
 The PRD is reconciled against **code**, so find the code:
 
-- The **merged PR(s)** that closed the issue — via the issue's timeline
-  (`cross-referenced` / `closed` events) or:
+- The **merged PR(s)** that closed the issue. Because the issue is closed, the record you
+  already fetched in step 4 names them directly — `closedByPullRequestsReferences` is the
+  reliable route, since `work-board` writes `Closes #N` into every PR body:
+  ```bash
+  gh issue view ISSUE_NUMBER --repo OWNER/REPO \
+    --json closedByPullRequestsReferences --jq '.closedByPullRequestsReferences[].number'
+  ```
+  If that comes back empty (the issue was closed by hand, or the PR didn't use a closing
+  keyword), fall back to the timeline's `cross-referenced` events, then to a search:
   ```bash
   gh pr list --repo OWNER/REPO --state merged --search "closes #ISSUE_NUMBER" \
     --json number,title,mergedAt,files
   ```
+  If **no** merged PR can be found at all, don't guess from the issue body — the body is
+  what was asked for, not what shipped. Report it and skip the issue.
 - The **diff** of those PRs (`gh pr diff N --repo OWNER/REPO`) — this is the ground truth
   for what changed.
 - The **current state of the touched code**, not just the diff. The diff tells you what
@@ -122,6 +144,11 @@ Spawn a **background** agent in its **own worktree**
 PRD location from step 2, the issue's full record, the merged PR diff, and
 `references/reconcile.md` as the procedure to follow. The agent does the reconciliation and
 ships it; this session dispatches, relays questions, and reports.
+
+Say in the brief that **the issue is already closed and must stay closed** — the work is
+done and this is documentation catching up. An agent carrying over `work-board` habits may
+otherwise try to reopen it, re-implement it, or write `Closes #N` on the docs PR. None of
+those are correct here.
 
 Each agent follows `references/reconcile.md`: identify the PRD sections this issue's change
 affects, compare them against the shipped code, rewrite them to describe what's there, open
