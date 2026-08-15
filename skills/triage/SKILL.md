@@ -58,6 +58,11 @@ wrong — e.g. an issue clearly not ready sitting in the `ready` role (which `wo
 would pick up!), or a stale card in `active` with no movement. Be especially careful about
 anything wrongly in **Ready**, since that directly feeds automated work.
 
+A closed issue sitting in `awaiting_review` or `prd_update` is **not** misplaced — those are
+working stages of the pipeline (a human reviews In Review cards; `/work-prd-update-board`
+drains PRD Update). Only flag them when they look genuinely stuck, e.g. a card that has sat
+in `prd_update` with an unanswered question comment on it.
+
 ### 4. Present the plan (no changes yet)
 Show a tight, grouped summary:
 - **Likely duplicates:** `#12 ~ #34 (both about currency display)` …
