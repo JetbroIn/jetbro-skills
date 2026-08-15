@@ -83,7 +83,7 @@ Cache these three for the rest of the session — they don't change mid-run.
 
 ## Step 4 — Fuzzy-map columns to roles
 
-Never hardcode column names. Map the board's real option names to these five **roles** by
+Never hardcode column names. Map the board's real option names to these six **roles** by
 meaning (case-insensitive, substring/synonym match):
 
 | Role | Matches names like |
@@ -92,13 +92,25 @@ meaning (case-insensitive, substring/synonym match):
 | `ready` | Ready, To Do, Up Next, Selected |
 | `active` | In Progress, Doing, WIP, Building, Started |
 | `awaiting_review` | In Review, Review, QA, Testing, Verify |
+| `prd_update` | PRD Update, PRD, Docs Update, Documentation, Spec Update |
 | `done` | Done, Shipped, Closed, Complete |
 
+The roles are ordered: an issue flows `parked → ready → active → awaiting_review →
+prd_update → done`. Not every board has every column — `prd_update` in particular exists
+only on projects that keep a PRD (see below).
+
 Rules:
-- The **`ready`** role is the only queue the skill consumes from. If no option maps to
+- The **`ready`** role is the only queue `work-board` consumes from. If no option maps to
   `ready` with confidence, **ask the user** which column means "cleared to work" — never
   guess, because guessing wrong means working the wrong cards.
 - Likewise confirm the `parked` target before parking a blocked issue there.
+- **`prd_update` is optional.** Many boards have no such column, and that is normal — it
+  means the project has no PRD stage. Absence is not an error and must never be
+  fuzzy-matched onto `awaiting_review` or `done` to force a match. If it is absent,
+  `/work-prd-update-board` reports "no PRD Update column on this board" and stops; the
+  other skills carry on as before, with `awaiting_review` handing straight to a human.
+- Only match `prd_update` when a column really means *documentation catch-up*. A column
+  named "Review" is `awaiting_review`, not `prd_update`, even on a PRD project.
 - A board may have extra columns with no role — leave them untouched.
 
 ## Step 5 — Resolve an issue → its project item

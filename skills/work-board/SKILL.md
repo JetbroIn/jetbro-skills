@@ -26,9 +26,10 @@ is empty, there is nothing to do — say so and (if looping) idle.
 ## Roles map, not column names
 
 Column names differ per board. Read the board's real Status options and map them by meaning
-to five roles — `parked`, `ready`, `active`, `awaiting_review`, `done` — per
+to six roles — `parked`, `ready`, `active`, `awaiting_review`, `prd_update`, `done` — per
 `references/board.md` Step 4. If the `ready` (or `parked`) role is ambiguous on a board,
-**ask the user once**; don't guess.
+**ask the user once**; don't guess. `prd_update` is optional and this skill never touches
+it — see "After In Review" below.
 
 ## Procedure
 
@@ -104,6 +105,18 @@ that agent. **Never invent product decisions.**
 ### 8. Report
 Keep the user posted in this session: what got picked up, what merged and moved to In
 Review, what's parked and why, what's still building. Lead with outcomes.
+
+## After In Review
+
+This skill's job ends at `awaiting_review`. What happens next depends on the board:
+
+- On a board **with** a `prd_update` column, the QA reviewer moves the card there, and
+  `/work-prd-update-board` reconciles the project's PRD against what shipped before the
+  card reaches Done.
+- On a board **without** one, In Review hands straight to a human as it always has.
+
+Either way, `work-board` never moves a card out of `awaiting_review` and never touches the
+PRD Update column.
 
 ## Looping until stop
 

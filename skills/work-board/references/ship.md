@@ -75,12 +75,16 @@ After merge + issue close + completion comment, move the issue's project card to
 
 ## 8. Stop — a human takes it from here
 
-Do **not** move the card to Done. Once merged to `main`, CI has run and the change is live
-for the team to experience; a human does the manual review and either moves it to **Done**
-(happy) or **reopens** the issue and moves it back to the `active` column (needs more work).
-If reopened, `work-board` can pick it up again on a later pass — it will reappear as work to
+Do **not** move the card past In Review. Once merged to `main`, CI has run and the change is
+live for the team to experience; a human does the manual review and either accepts it or
+**reopens** the issue and moves it back to the `active` column (needs more work). If
+reopened, `work-board` can pick it up again on a later pass — it will reappear as work to
 do, not as Ready, so treat a reopened+active card as already-assigned continuation, not a
 fresh Ready pick.
+
+Where a happy review sends the card depends on the board: on a project with a `prd_update`
+column it goes there next (and `/work-prd-update-board` takes it to Done); elsewhere the
+human moves it to Done directly. Either way that move is not yours to make.
 
 ## Summary of state transitions this produces
 
@@ -88,5 +92,6 @@ fresh Ready pick.
 |------|--------------|--------------|
 | picked up (before build) | active (In Progress) | open |
 | PR merged | awaiting_review (In Review) | **closed** |
-| human happy | done (Done) — *human does this* | closed |
+| human happy, board has a PRD stage | prd_update — *human does this* | closed |
+| human happy, no PRD stage | done (Done) — *human does this* | closed |
 | human unhappy | active — *human reopens* | reopened |

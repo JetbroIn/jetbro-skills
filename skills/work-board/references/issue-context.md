@@ -54,6 +54,13 @@ Before deciding anything about an issue, answer these from the full record:
 - **Who decided what?** Attribute decisions to people and dates, so you can tell a current
   constraint from a stale opinion.
 
+**A closed issue is a normal thing to read, not a dead end.** Later stages of the pipeline
+work entirely on closed issues — `/work-prd-update-board` reconciles the PRD against issues
+that shipped weeks ago. For those, `closedByPullRequestsReferences` in the query above is
+the most valuable field in the record: it names the PR that actually implemented the issue,
+which is the ground truth the docs get checked against. Don't treat `state: CLOSED` as a
+reason to stop reading.
+
 ## When the record conflicts with itself
 
 Prefer, in order: the most recent explicit decision from a maintainer > earlier comments >
