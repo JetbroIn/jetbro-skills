@@ -69,6 +69,10 @@ While active:
   any developer does, so the title and the top of the body describe the product problem in
   plain language. Any code detail (root cause, files, implementation notes) goes below a
   `---` under a `### Technical notes` heading. See `references/authoring.md` §3.
+- **Give it acceptance criteria.** A checklist of observable outcomes under
+  `## Acceptance criteria`, between the functional and technical halves. These are the
+  contract: on a board with an Agent QA column, `/qa-board` verifies the shipped change
+  against exactly these and passes or fails the card on them. See `references/authoring.md` §4.
 - **Create them on the right board** with the right project, the right column (usually the
   `parked`/Todo backlog unless the user says the issue is ready), and the right labels/tags.
 - If the user asks to build something, **remind them they're in write-issues mode** and

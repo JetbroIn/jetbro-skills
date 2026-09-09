@@ -1,6 +1,6 @@
 ---
 name: work-board
-description: Work the project board end to end. Finds Ready issues on the GitHub Projects v2 board, dispatches background worktree agents to build them, opens PRs in the team house style, reviews + CI + merges, closes issues, and moves cards to In Review. Can loop until you say stop. Only ever picks up work from the Ready column. Use when you want Claude to develop the outstanding issues on a phlo client project.
+description: Work the project board end to end. Finds Ready issues on the GitHub Projects v2 board, dispatches background worktree agents to build them, opens PRs in the team house style, reviews + CI + merges, closes issues, and moves cards to Agent QA (or In Review if the board has no Agent QA column). Can loop until you say stop. Only ever picks up work from the Ready column. Use when you want Claude to develop the outstanding issues on a phlo client project.
 user-invocable: true
 allowed-tools: Bash, Read, Grep, Glob, Agent, TaskCreate, TaskUpdate, TaskList, TaskOutput
 ---
@@ -26,10 +26,11 @@ is empty, there is nothing to do — say so and (if looping) idle.
 ## Roles map, not column names
 
 Column names differ per board. Read the board's real Status options and map them by meaning
-to six roles — `parked`, `ready`, `active`, `awaiting_review`, `prd_update`, `done` — per
-`references/board.md` Step 4. If the `ready` (or `parked`) role is ambiguous on a board,
-**ask the user once**; don't guess. `prd_update` is optional and this skill never touches
-it — see "After In Review" below.
+to seven roles — `parked`, `ready`, `active`, `agent_qa`, `awaiting_review`, `prd_update`,
+`done` — per `references/board.md` Step 4. If the `ready` (or `parked`) role is ambiguous on
+a board, **ask the user once**; don't guess. `agent_qa` and `prd_update` are both optional:
+`prd_update` this skill never touches, and `agent_qa` only changes **where a finished card
+is handed off** — see "After the build" below.
 
 ## Procedure
 
@@ -73,6 +74,13 @@ and the timeline** per `references/issue-context.md`. The body is the opening st
 the spec: scope gets narrowed in comments, approaches get rejected in comments, and the
 answer that unparked an issue **is** a comment. Never plan or dispatch off the body alone.
 
+**Check specifically whether the card is a QA bounce.** On a board with an `agent_qa`
+column, `/qa-board` moves failed cards back to `ready`, so the Ready queue mixes fresh
+issues with repairs — and they are indistinguishable from the body alone. A `❌ QA failed`
+comment, a prior `✅ Done in PR #N` comment, or a reopened issue all mean this was already
+built once. Handle those per `references/qa-bounce.md`: repair the specific failure rather
+than rebuilding, and escalate to a human instead when the failure needs a decision.
+
 ### 4. Plan for conflicts
 Before doing anything, apply the conflict-risk check in `references/dispatch.md`. Decide
 which Ready issues can run in **parallel** worktrees and which must be **serialized**
@@ -85,6 +93,10 @@ For each issue you're starting:
 - Spawn a **background** build agent in its **own worktree**
   (`references/dispatch.md`) with a self-contained brief: the resolved repo, the issue's
   **full record from step 3 (body + comments + timeline)**, and the build→ship procedure.
+  Tell the agent to **re-read the issue's full record itself** (`references/issue-context.md`)
+  before writing code — the brief can go stale, and an agent that works from a summary of
+  the body is exactly the failure this pipeline keeps hitting. If it's a QA bounce, the brief
+  says so and points at `references/qa-bounce.md`.
   The agent does the coding; this session does **not** build.
 
 ### 6. Build → ship (in each background agent)
@@ -92,9 +104,9 @@ Each agent follows `references/ship.md`: implement, self-review, get CI green, d
 check when the change has runtime surface, then — only when confident — merge (PR body says
 `Closes #N`, house-style title with the version bump), confirm the issue closed, **leave a
 completion comment on the issue** (what was done, plus how only when non-obvious), and move
-the card to `awaiting_review` (In Review). Merges are serialized across agents
-(`references/dispatch.md`). Agents **stop at In Review** — a human takes it to Done or
-reopens it.
+the card onward — to `agent_qa` if the board has that column, otherwise to `awaiting_review`
+(In Review). Merges are serialized across agents (`references/dispatch.md`). Agents **stop
+at that handoff** — `/qa-board` or a human takes it from there.
 
 ### 7. Questions → ask or park
 If a background agent hits a blocking business/technical question, follow
@@ -103,20 +115,25 @@ going, and if it goes unanswered, comment on the issue + move the card to `parke
 that agent. **Never invent product decisions.**
 
 ### 8. Report
-Keep the user posted in this session: what got picked up, what merged and moved to In
-Review, what's parked and why, what's still building. Lead with outcomes.
+Keep the user posted in this session: what got picked up, what merged and where it handed
+off to (Agent QA or In Review), what was a QA repair rather than fresh work, what's parked
+and why, what's still building. Lead with outcomes.
 
-## After In Review
+## After the build
 
-This skill's job ends at `awaiting_review`. What happens next depends on the board:
+This skill's job ends at the handoff column. What happens next depends on the board:
 
-- On a board **with** a `prd_update` column, the QA reviewer moves the card there, and
-  `/work-prd-update-board` reconciles the project's PRD against what shipped before the
-  card reaches Done.
-- On a board **without** one, In Review hands straight to a human as it always has.
+- On a board **with** an `agent_qa` column, the card goes there and `/qa-board` verifies it
+  against the issue's acceptance criteria. A pass forwards it to `awaiting_review`; a
+  failure comes **back to `ready`** with a `❌ QA failed` comment, which this skill picks up
+  again as a repair (`references/qa-bounce.md`), not as fresh work.
+- On a board **with** a `prd_update` column, the human reviewer moves the card there after
+  In Review, and `/work-prd-update-board` reconciles the project's PRD against what shipped
+  before the card reaches Done.
+- On a board with **neither**, In Review hands straight to a human as it always has.
 
-Either way, `work-board` never moves a card out of `awaiting_review` and never touches the
-PRD Update column.
+`work-board` never moves a card out of `awaiting_review`, never touches the PRD Update
+column, and never moves a card out of `agent_qa` — that queue belongs to `/qa-board`.
 
 ## Looping until stop
 
@@ -133,5 +150,6 @@ session responsive throughout — the loop is a heartbeat, not a blocker.
 - `references/board.md` — Projects v2 discovery, fuzzy column mapping, the move mutation (verified GraphQL).
 - `references/issue-context.md` — reading an issue's full record: body + comments + timeline, before any decision.
 - `references/dispatch.md` — background worktree agents, conflict-risk check, merge coordination.
-- `references/ship.md` — PR house style, review, CI, merge, close, move to In Review.
+- `references/ship.md` — PR house style, review, CI, merge, close, hand off to Agent QA or In Review.
 - `references/park.md` — the ask-or-park policy for blocking questions.
+- `references/qa-bounce.md` — picking up a card that failed automated QA: repair vs. escalate.

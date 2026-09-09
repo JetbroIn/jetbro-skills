@@ -12,8 +12,10 @@ bring the project's PRD back in line with the code that actually got built, then
 card to **Done**.
 
 This is the last automated stage of the pipeline. `write-issues` fills the board,
-`work-board` drains Ready and stops at In Review, a human QA reviews and moves the card to
-PRD Update, and this skill closes the loop.
+`work-board` drains Ready and hands off (to `agent_qa` where the board has it, otherwise
+straight to In Review), `/qa-board` verifies the acceptance criteria where that column
+exists, a human reviews the In Review card and moves it to PRD Update, and this skill closes
+the loop.
 
 > **You are in a fork.** Client work lives in a fork of the framework
 > (`enterpriseagentstack/phlo`), and the board + issues are **per project**. Resolve the
@@ -22,8 +24,8 @@ PRD Update, and this skill closes the loop.
 
 ## The hard rules
 
-1. **Only ever pick up work from the `prd_update` column.** Never touch Ready, In Review,
-   or anything else. A card arrives here because a human put it here.
+1. **Only ever pick up work from the `prd_update` column.** Never touch Ready, Agent QA,
+   In Review, or anything else. A card arrives here because a human put it here.
 2. **The code is right; the PRD is what's stale.** You are reconciling the document to
    the shipped implementation, not questioning the implementation. If the code looks
    *wrong*, that is a question for a human (see step 8), not a reason to edit code.
@@ -182,7 +184,7 @@ interval rather than busy-waiting; keep the main session responsive.
 
 ## References
 - `references/reconcile.md` — how to compare PRD against code, what to rewrite, and shipping the docs-only PR.
-- `../work-board/references/board.md` — board discovery, the six roles, the move mutation.
+- `../work-board/references/board.md` — board discovery, the seven roles, the move mutation.
 - `../work-board/references/issue-context.md` — reading an issue's full record before acting.
 - `../work-board/references/dispatch.md` — background worktree agents and merge coordination.
 - `../work-board/references/park.md` — the ask-or-park policy for blocking questions.

@@ -83,7 +83,7 @@ Cache these three for the rest of the session — they don't change mid-run.
 
 ## Step 4 — Fuzzy-map columns to roles
 
-Never hardcode column names. Map the board's real option names to these six **roles** by
+Never hardcode column names. Map the board's real option names to these seven **roles** by
 meaning (case-insensitive, substring/synonym match):
 
 | Role | Matches names like |
@@ -91,13 +91,14 @@ meaning (case-insensitive, substring/synonym match):
 | `parked` (backlog) | Todo, Backlog, Icebox, Triage, New |
 | `ready` | Ready, To Do, Up Next, Selected |
 | `active` | In Progress, Doing, WIP, Building, Started |
+| `agent_qa` | Agent QA, AI QA, Automated QA, Bot QA |
 | `awaiting_review` | In Review, Review, QA, Testing, Verify |
 | `prd_update` | PRD Update, PRD, Docs Update, Documentation, Spec Update |
 | `done` | Done, Shipped, Closed, Complete |
 
-The roles are ordered: an issue flows `parked → ready → active → awaiting_review →
-prd_update → done`. Not every board has every column — `prd_update` in particular exists
-only on projects that keep a PRD (see below).
+The roles are ordered: an issue flows `parked → ready → active → agent_qa →
+awaiting_review → prd_update → done`. Not every board has every column — `agent_qa` and
+`prd_update` in particular exist only on boards that opt into those stages (see below).
 
 Rules:
 - The **`ready`** role is the only queue `work-board` consumes from. If no option maps to
@@ -111,6 +112,18 @@ Rules:
   other skills carry on as before, with `awaiting_review` handing straight to a human.
 - Only match `prd_update` when a column really means *documentation catch-up*. A column
   named "Review" is `awaiting_review`, not `prd_update`, even on a PRD project.
+- **`agent_qa` is optional, and distinguishing it from `awaiting_review` matters.** It is
+  the queue an automated QA agent (`/qa-board`) drains, sitting *before* human review. If a
+  board has it, `/work-board` ships finished cards there instead of `awaiting_review`; if it
+  does not, nothing changes and cards go straight to `awaiting_review` exactly as before.
+  Absence is normal and never an error.
+- **Never fuzzy-match a plain "QA"/"Testing" column onto `agent_qa`.** Those are human
+  review columns and map to `awaiting_review`, as they always have — matching them to
+  `agent_qa` would silently hand a human's review queue to a bot. Only match `agent_qa`
+  when the column name explicitly signals *automated/agent* QA (it says "Agent", "AI",
+  "Bot", or "Automated"). When a board has both such a column and a human review column,
+  the explicit one is `agent_qa` and the plain one is `awaiting_review`. If a single column
+  is genuinely ambiguous, **ask the user** — do not assume a bot owns it.
 - A board may have extra columns with no role — leave them untouched.
 
 ## Step 5 — Resolve an issue → its project item
@@ -174,11 +187,25 @@ mutation {
 
 (Get `ISSUE_NODE_ID` from the issue's `id` field via the repository→issue query.)
 
-## Step 7 — List the Ready queue
+## Step 7 — List a column's queue
 
-Combine the above: read the board's items, keep those whose Status maps to the `ready`
-role, that are **open** issues (not PRs), from the target repo. That list — oldest first
-by default, or however the user prefers — is what the skill picks up from.
+Combine the above: read the board's items, keep those whose Status maps to the role you
+want, from the target repo. That list — oldest first by default, or however the user
+prefers — is what the skill picks up from.
+
+Which role, and whether to filter by issue state, depends on the skill:
+
+| Skill | Role it drains | Issue state |
+|-------|----------------|-------------|
+| `/work-board` | `ready` | **open** issues (not PRs) |
+| `/qa-board` | `agent_qa` | **closed** — cards arrive here after their PR merged |
+| `/work-prd-update-board` | `prd_update` | **closed** |
+
+Filtering on `state: OPEN` is right for the Ready queue and **wrong** for every later
+stage: `ship.md` merges a PR that says `Closes #N`, so a card sitting in `agent_qa` or
+`prd_update` belongs to an issue that is already closed. Filter those queues on the card's
+column, not the issue's state (see `issue-context.md` — a closed issue is a normal thing to
+read, not a dead end).
 
 ---
 

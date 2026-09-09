@@ -42,6 +42,10 @@ product language: what happens today, what should happen instead, who it affects
 matters. No file paths, no function or component names, no root-cause jargon, no stack
 traces. If a reader needs the codebase to understand it, it belongs below the line.
 
+**The acceptance criteria** sit between the two, under their own `## Acceptance criteria`
+heading — they are the contract both audiences share, so they belong to neither half.
+Section 4 covers how to write them.
+
 **The technical part** (below) is everything the developer needs and the analyst doesn't:
 suspected root cause, the files/modules involved, implementation notes, edge cases,
 migration or data concerns. Separate it with a horizontal rule and a heading, exactly:
@@ -53,6 +57,14 @@ the downstream reports, where they show impossible ages.
 
 Expected: the date of birth must be strictly in the past. Anything else is rejected at
 entry with a clear message telling the user what's wrong.
+
+## Acceptance criteria
+
+- [ ] Submitting the client form with a DOB of today is rejected, with an error naming
+      the date-of-birth field.
+- [ ] Submitting a DOB in the future is rejected the same way.
+- [ ] A DOB in the past still saves as it does today.
+- [ ] The API rejects a future DOB as well, not just the form.
 
 ---
 ### Technical notes
@@ -67,7 +79,39 @@ Files: `src/forms/ClientForm.tsx`, `api/clients.py`
 Use a visible `---` + `### Technical notes` heading rather than a collapsed block — the
 developer and `/work-board` should see it without expanding anything.
 
-## 4. Writing the issue — judgment, not a template
+## 4. Acceptance criteria — the contract
+
+Acceptance criteria say **how anyone can tell the issue is done**. They matter more than
+they used to: on a board with an Agent QA column, `/qa-board` verifies the shipped change
+against exactly these, and passes or fails the card on them. Vague criteria produce
+worthless QA; precise ones make the whole pipeline work.
+
+Write them as a checklist of **observable outcomes**:
+
+- **Observable, not internal.** "Submitting a future DOB shows an error naming the field",
+  not "add a max-date validator." *What can be seen*, not how it's built — the how lives in
+  the technical section, and a criterion written as an implementation detail passes the
+  moment that code exists, whether or not it works.
+- **Specific enough to be checked without asking you.** Name the actual values, states and
+  messages where they matter. "Rejected with a clear message" is checkable; "handles dates
+  properly" is not.
+- **Cover the failure paths, not just the happy one.** The invalid input, the empty state,
+  the unauthorized user — these are where the bugs are, and a criteria list that only
+  describes success gets a pass from a broken build.
+- **Each one independently verifiable.** One outcome per line, so a verdict can be recorded
+  against it. Don't bundle three behaviors into one bullet.
+- **Bounded by the issue's scope.** Criteria are the promise, and QA fails a card that
+  misses one — so don't smuggle in extra scope as a criterion.
+
+How many depends on the issue. A small change might have two; something with several states
+might have eight. A genuinely trivial one-liner may need none at all — don't manufacture a
+checklist to satisfy a format.
+
+**When criteria change later, say so in a comment.** The most recent explicit statement
+wins, and every downstream agent reads the comments, so an amendment in a comment is
+authoritative. Don't silently edit the body and expect in-flight work to notice.
+
+## 5. Writing the issue — judgment, not a template
 
 Within that ordering there is **no fixed format**. Write each item using common sense and
 first principles: let the *thing itself* decide the shape and length. Some items are bugs,
@@ -90,6 +134,10 @@ So:
   them, under the technical heading; leave them out when they'd be noise.
 - **Match the item's nature.** A bug reads differently from an enhancement or a change
   request. Title it and frame it as what it is.
+- **Default to giving it acceptance criteria.** The freedom above is about prose, shape and
+  length — not about skipping the contract. Anything a developer will build gets criteria
+  (§4), because that is what QA verifies. Only a genuinely trivial item is complete without
+  them.
 - **Titles are functional too.** The board is scanned by the same non-technical readers, so
   a title describes the product problem, not the cause. Keep them crisp and specific, but
   leave the mechanism for the technical section:
@@ -101,12 +149,12 @@ So:
 When unsure how much detail an item needs, ask the user or lean on what you learned reading
 the code — don't default to a heavy structure just to be safe.
 
-## 5. Draft, then confirm
+## 6. Draft, then confirm
 
 Show the user the drafted title + body before creating. Iterate. Author one issue or a
 batch, as the conversation calls for. Don't create issues silently — confirm.
 
-## 6. Create the issue and place it on the board
+## 7. Create the issue and place it on the board
 
 Create the issue in the resolved repo:
 
@@ -130,7 +178,7 @@ Ready). When in doubt, park it and let the user promote it.
 make sure it lands on the **correct project board** for this repo — confirm rather than
 assume if a repo maps to more than one board.
 
-## 7. Stay in mode
+## 8. Stay in mode
 
 After creating, remain in authoring mode for the next prompt. Only development requests
 should trigger the reminder-and-offer-to-exit; everything else continues authoring. The

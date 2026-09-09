@@ -58,10 +58,16 @@ wrong — e.g. an issue clearly not ready sitting in the `ready` role (which `wo
 would pick up!), or a stale card in `active` with no movement. Be especially careful about
 anything wrongly in **Ready**, since that directly feeds automated work.
 
-A closed issue sitting in `awaiting_review` or `prd_update` is **not** misplaced — those are
-working stages of the pipeline (a human reviews In Review cards; `/work-prd-update-board`
-drains PRD Update). Only flag them when they look genuinely stuck, e.g. a card that has sat
-in `prd_update` with an unanswered question comment on it.
+A closed issue sitting in `agent_qa`, `awaiting_review` or `prd_update` is **not** misplaced
+— those are working stages of the pipeline (`/qa-board` drains Agent QA; a human reviews In
+Review cards; `/work-prd-update-board` drains PRD Update). Only flag them when they look
+genuinely stuck, e.g. a card that has sat in `prd_update` with an unanswered question
+comment on it, or one in `agent_qa` with a QA claim comment and no verdict long after.
+
+An **open** issue in `ready` carrying a `❌ QA failed` comment is also not misplaced — that
+is the QA bounce loop working as designed, and `/work-board` will pick it up as a repair.
+Flag it only if it has bounced repeatedly on the same criterion, which means the loop isn't
+converging and a human should look.
 
 ### 4. Present the plan (no changes yet)
 Show a tight, grouped summary:

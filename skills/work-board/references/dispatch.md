@@ -42,14 +42,23 @@ Give the agent a self-contained brief:
 
 - The **repo** (resolved per board.md — not the folder name) and the **issue number**.
 - The issue's **full record — body, every comment, and the timeline** (`issue-context.md`),
-  not just the body. Either pass the fetched record in the brief or tell the agent to read
-  it first; either way the agent must have the comment history before it writes any code.
-  Scope changes, rejected approaches, and answers to previously-parked questions live in
-  comments, and an agent that skips them builds the wrong thing.
+  not just the body. Pass the fetched record in the brief **and** tell the agent to re-read
+  it itself before writing any code — briefs go stale, and summarising the body is precisely
+  how agents end up building the wrong thing. Scope changes, rejected approaches, and
+  answers to previously-parked questions live in comments; an agent that reads only the
+  description will miss every one of them.
+- Whether this is a **QA bounce** (a `❌ QA failed` comment, a prior `✅ Done in PR #N`, or a
+  reopened issue). If so, say so explicitly in the brief and point the agent at
+  `qa-bounce.md`: it must repair the specific failed criteria against the already-merged
+  code, not rebuild the issue from scratch.
+- The issue's **acceptance criteria**, called out as the bar the work will be measured
+  against — on a board with an `agent_qa` column, `/qa-board` verifies exactly these before
+  the card can move on.
 - Instruction to work in its **own worktree/branch** off the default branch.
 - The full **build → ship** procedure (see ship.md): implement, verify, open PR in house
   style, ensure CI passes, self-review, and — only when confident — merge, close the issue,
-  and move the card to the `awaiting_review` (In Review) column.
+  and move the card onward — to `agent_qa` if the board has that column, otherwise to
+  `awaiting_review` (In Review).
 - The **ask-or-park** policy (see park.md) for blocking questions: surface up to the
   dispatcher; do not invent business decisions.
 - The reminder to **stay in the resolved repo** and never reach back to the parent
