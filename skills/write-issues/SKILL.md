@@ -65,6 +65,10 @@ While active:
 - **Draft and refine issues** adaptively — bug, enhancement, change request, or a clear
   one-liner — matching length and structure to what the item actually needs (no fixed
   template), one or many, iterating with the user. See `references/authoring.md`.
+- **Write functional-first.** Analysts, QA and client stakeholders read these issues before
+  any developer does, so the title and the top of the body describe the product problem in
+  plain language. Any code detail (root cause, files, implementation notes) goes below a
+  `---` under a `### Technical notes` heading. See `references/authoring.md` §3.
 - **Create them on the right board** with the right project, the right column (usually the
   `parked`/Todo backlog unless the user says the issue is ready), and the right labels/tags.
 - If the user asks to build something, **remind them they're in write-issues mode** and
