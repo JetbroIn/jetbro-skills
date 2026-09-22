@@ -150,9 +150,9 @@ grep -c '—' skills/hansei/references/destinations.md
 Expected: `0`. Any other number means em-dashes slipped in; replace them with colons or commas before continuing.
 
 ```bash
-grep -c 'aside-only' skills/hansei/references/destinations.md
+grep -ci 'aside-only' skills/hansei/references/destinations.md
 ```
-Expected: `2` or more (the scope tier must appear in both the skill/hook entry and the tier table).
+Expected: `2`. The concept appears once in the skill/hook entry (lowercase, in prose) and once in the scope-tier table (capitalized), so the match must be case-insensitive: `-i`.
 
 - [ ] **Step 4: Verify the cross-references resolve**
 
