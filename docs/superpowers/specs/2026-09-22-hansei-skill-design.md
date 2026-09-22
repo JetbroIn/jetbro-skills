@@ -101,7 +101,9 @@ board. Intelligent, need-driven probing; not a mechanical sweep of every surface
 
 Two rules keep this honest:
 
-1. **Check before proposing.** Check the destination the fix would land in: CLAUDE.md, an existing memory, an existing script, an already-wired env key, an open issue. If the fix is already there, the finding is dead, not restated.
+1. **Check before proposing.** Check the destination the fix would land in: CLAUDE.md, an
+existing memory, an existing script, an already-wired env key, an open issue. If the fix is
+already there, the finding is dead, not restated.
 2. **Respect the scope boundary above.** Repo and project Claude config are writable;
    global skills and the plugin are aside-only.
 
