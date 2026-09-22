@@ -4,8 +4,9 @@
 
 A Claude Code plugin for the way we actually build **phlo** projects: issues on a board,
 work in a fork, ship to `main`. Seven skills that between them fill the board, keep it tidy,
-do the work, QA it, catch the docs up, tell you how the week went, and turn the session you just had into improvements. The repo is both
-the plugin *and* its own marketplace, and it's going to keep growing.
+do the work, QA it, catch the docs up, tell you how the week went, and turn the session you
+just had into improvements. The repo is both the plugin *and* its own marketplace, and it's
+going to keep growing.
 
 ## Meet the crew
 
