@@ -109,8 +109,10 @@ already there, the finding is dead, not restated.
 
 ## Output format
 
-A ranked list, **3 to 5 items maximum**, capped so it stays readable at the end of a long
-session. Each item has exactly three parts: the friction, the evidence, the countermeasure
+A ranked list, **5 items maximum**, capped so it stays readable at the end of a long
+session. Five is a ceiling, not a target, and there is no floor: one or two real items is a
+good hansei, and inventing a third to reach a number is the padding this skill exists to
+avoid. Each item has exactly three parts: the friction, the evidence, the countermeasure
 with its destination.
 
 ```

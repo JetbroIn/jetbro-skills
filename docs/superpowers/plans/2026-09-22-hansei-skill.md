@@ -19,7 +19,7 @@ These apply to every task. Copied verbatim from the spec and from the user's sta
 - **Evidence rule:** every proposed item must name the specific moment in the conversation that produced it; an item that cannot cite its turn does not ship.
 - **Findings come from the conversation only**, never from auditing the repo for general improvements. Reading the workspace is capability discovery, not a source of findings.
 - **No writes of any kind before the user gives a verdict on that specific item.**
-- **Item cap: 3 to 5.** When there is no real friction the output is "clean run, nothing worth changing"; padding is a defect.
+- **Item cap: 5 maximum, no floor.** Five is a ceiling, not a target: one or two real items is a good result. When there is no real friction the output is "clean run, nothing worth changing"; padding to reach a number is a defect.
 - **Scope tiers:** writable = the repo and this project's Claude config; aside-only = global skills and the jetbro-skills plugin itself; hard out-of-scope = Claude Code, the model, GitHub's API.
 - **Register:** unsparing but never self-flagellating, aimed at the process and never at a person.
 - **House style:** short `SKILL.md`, heavier detail in `references/`. Match the voice of `skills/vibe-check/SKILL.md` and `skills/triage/SKILL.md`.
