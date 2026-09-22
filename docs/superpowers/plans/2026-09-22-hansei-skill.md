@@ -313,7 +313,7 @@ Expected: validation passes and reports the plugin's skills. If `hansei` is abse
 ```bash
 grep -c '—' skills/hansei/SKILL.md
 ```
-Expected: this file deliberately contains em-dashes **only** inside the skill's own prose where they were written above. Run the check and replace every one with a colon, comma, or parenthesis, then re-run. Expected final: `0`.
+Expected: `0`. The content in Step 1 is already em-dash free; if the count is non-zero, one was introduced during transcription. Replace it with a colon, comma, or parenthesis and re-run.
 
 ```bash
 grep -n 'references/destinations.md' skills/hansei/SKILL.md && ls skills/hansei/references/destinations.md
