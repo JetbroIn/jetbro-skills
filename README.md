@@ -77,9 +77,17 @@ Then install the plugin:
 
 Then just type `/` and pick your fighter.
 
-Works the same everywhere Claude Code runs: type these in the **desktop app**, the terminal
-CLI, or an IDE extension. Plugins are a Claude Code feature, not a CLI-only one, so there is
-no separate desktop install.
+### Desktop app
+
+**Run the two commands above in the terminal CLI, on the same machine.** The desktop app
+cannot run `/plugin` commands at all: it has a plugin browser (the **+** button next to the
+prompt box, then **Plugins**), and that browser installs from marketplaces that are
+*already configured*. Adding a third-party marketplace like this one is not something the
+documentation covers for the desktop app, and adding it by repository there has failed for
+us in practice.
+
+So: add the marketplace once in the CLI, and the plugin is then available on that machine.
+If you find a desktop path that works, please open an issue and we will document it.
 
 ## How the board actually works (the boring-but-important bit)
 
