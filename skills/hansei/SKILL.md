@@ -97,7 +97,10 @@ point is reading and proposing.
 
 Ask with `AskUserQuestion` so it is a few clicks, not an essay. Per item:
 
-- **Do it now** → make the change, then report exactly what was written where.
+- **Do it now** → make the change, then report exactly what was written where. If the
+  destination turns out not to exist (no CLAUDE.md, no `scripts/` convention, no board),
+  stop and ask before creating it: the approval was for the note, not for a new file in
+  someone's repo root.
 - **Backlog it** → record it in whatever format this workspace permits (see the fallback
   ladder in the reference: board issue, plain issue, repo TODO, memory note).
 - **Drop it** → say nothing further about it.

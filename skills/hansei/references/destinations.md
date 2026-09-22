@@ -31,9 +31,9 @@ Never restructure a CLAUDE.md to accommodate one note.
 working style, standing constraints.
 **Probe:** read the memory index at the path given in the session's memory instructions.
 Look for an existing file covering the topic.
-**Write convention:** follow the memory format the session defines (frontmatter with
-`name`, `description`, `metadata.type`, plus an index line). Update an existing memory
-rather than creating a near-duplicate.
+**Write convention:** follow the memory format the session defines. Do not compose the
+frontmatter from memory: open an existing memory file and copy its field shape exactly,
+then fill in your values. Update an existing memory rather than creating a near-duplicate.
 
 ### 3. Skill / hook / command
 **Fits:** a repeatable procedure that was reconstructed by hand this session and will be
