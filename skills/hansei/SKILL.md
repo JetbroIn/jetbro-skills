@@ -64,14 +64,15 @@ repo docs / CLAUDE.md, Claude memory, a skill/hook/command, env/config/MCP, a sc
 backlog issue.
 
 Two checks before an item ships:
-- **Already fixed?** If CLAUDE.md already documents it, the finding is dead. Drop it, do
-  not restate it.
+- **Already fixed?** Check the destination the fix would land in, not just CLAUDE.md: a rule already in Claude memory, a script that already does this, an env key already wired, an open issue already filed. If it is already there, the finding is dead. Drop it, do not restate it. Proposing a duplicate is worse than proposing nothing.
 - **In scope?** The repo and this project's Claude config are fair game. Global skills and
   the jetbro-skills plugin itself are **aside-only**: mention in one line, never write.
   Claude Code's own behaviour, the model, and GitHub's API are **out of scope entirely**,
   the user cannot change them, so proposing it wastes the list.
 
-## 3. Present 3 to 5 items, ranked
+## 3. Present what you actually found, ranked (5 items maximum)
+
+Five is a ceiling, not a target, and there is no floor. Two real items is a good hansei. One is a good hansei. Never invent an item to reach a number: an item you would not have raised on its own merits is padding, and padding is the whole failure mode this skill exists to avoid.
 
 Each item is three parts and no more: the friction, the evidence from this session, the
 countermeasure with its destination.

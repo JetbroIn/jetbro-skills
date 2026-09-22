@@ -11,6 +11,8 @@ repo has a `scripts/` convention; it does not need the board. One or two cheap r
 finding is the target. If a probe is expensive, prefer proposing the destination
 conditionally ("if this repo keeps a CLAUDE.md, add it there") over spending the time.
 
+Every probe answers two questions, not one: does this destination exist here, and does it already contain this exact fix? The second question is the one that kills duplicates. A `scripts/` directory existing does not mean your script is missing; look for the script itself. An `.env.example` existing does not mean your key is absent; grep for it.
+
 ## The menu
 
 ### 1. Repo docs / CLAUDE.md
