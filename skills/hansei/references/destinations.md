@@ -33,7 +33,9 @@ working style, standing constraints.
 Look for an existing file covering the topic.
 **Write convention:** follow the memory format the session defines. Do not compose the
 frontmatter from memory: open an existing memory file and copy its field shape exactly,
-then fill in your values. Update an existing memory rather than creating a near-duplicate.
+then fill in your values. If there is no existing file to copy, follow the format the
+session's own memory instructions give. Update an existing memory rather than creating a
+near-duplicate.
 
 ### 3. Skill / hook / command
 **Fits:** a repeatable procedure that was reconstructed by hand this session and will be
