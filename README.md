@@ -3,8 +3,8 @@
 > Your GitHub board, but with a crew.
 
 A Claude Code plugin for the way we actually build **phlo** projects: issues on a board,
-work in a fork, ship to `main`. Six skills that between them fill the board, keep it tidy,
-do the work, QA it, catch the docs up, and then tell you how the week went. The repo is both
+work in a fork, ship to `main`. Seven skills that between them fill the board, keep it tidy,
+do the work, QA it, catch the docs up, tell you how the week went, and turn the session you just had into improvements. The repo is both
 the plugin *and* its own marketplace, and it's going to keep growing.
 
 ## Meet the crew
@@ -17,6 +17,7 @@ the plugin *and* its own marketplace, and it's going to keep growing.
 | 🔍 | **`/qa-board`** | Drains the **Agent QA** column. Reads each issue's **acceptance criteria** and actually proves them — reading the merged diff, running the suite, and when the criteria are about what a *user* sees, standing up Docker, opening a browser and driving the flow for real. Passes the card to **In Review**, or fails it with evidence and sends it back to **Ready**. Optional: no Agent QA column, no change. | The sceptic. Won't take your word for it. |
 | 📝 | **`/work-prd-update-board`** | Drains the **PRD Update** column. For each issue QA has signed off, it reads the shipped code and the merged PR, rewrites the stale bits of your PRD to match what actually got built, ships a docs-only PR, merges it, and moves the card to **Done**. Only runs on projects whose `CLAUDE.md` says they keep a PRD. | The one who reads the docs nobody else reads. |
 | 🔥 | **`/vibe-check`** | Reads the week (commits, PR titles, open issues) and gives you a fast, funny read on the mood. Roasts the *work*, never the people, then celebrates what shipped. Because we're not robots. | The comedian. Runs on Fridays. |
+| 🪞 | **`/hansei`** | Reflects on the session you just had and turns it into **concrete self-improvements for this workspace**: a note in CLAUDE.md, a memory, an env key, a script, or a backlog issue. Every suggestion has to cite the moment that caused it, so you get countermeasures, not platitudes. You accept, backlog, or drop each one. | The one who won't let a session end with "that went fine." |
 
 ## The pipe
 
@@ -30,7 +31,12 @@ It's an assembly line, and each skill is one station:
                                           └──── fails it ──┘  back to Ready, with evidence
 
                                     🔥  vibe-check — tells you how it all felt
+                                    🪞  hansei: tells you what to change next time
 ```
+
+Those bottom two aren't stations, they're the pair that looks back: `/vibe-check` reads the
+*week's output* and tells you how it felt, `/hansei` reads *one session's friction* and
+tells you what to change. Morale and discipline. Neither one touches a column.
 
 You still control the tap at both ends: nothing gets **built** until *you* drag a card into
 **Ready**, and nothing reaches **Done** until *you* review it into **PRD Update**. What
