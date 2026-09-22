@@ -1,5 +1,7 @@
 # 🛠️ Jetbro Skills
 
+**v1.5.0**
+
 > Your GitHub board, but with a crew.
 
 A Claude Code plugin for the way we actually build **phlo** projects: issues on a board,
@@ -58,12 +60,26 @@ card that keeps bouncing — it parks it and asks instead of spinning.
 
 ## Get the crew
 
+Two steps, and they are two separate commands. Run the first, let it finish, then run the
+second.
+
+Add the marketplace:
+
 ```
 /plugin marketplace add JetbroIn/jetbro-skills
+```
+
+Then install the plugin:
+
+```
 /plugin install jetbro-skills@jetbro-skills
 ```
 
 Then just type `/` and pick your fighter.
+
+Works the same everywhere Claude Code runs: type these in the **desktop app**, the terminal
+CLI, or an IDE extension. Plugins are a Claude Code feature, not a CLI-only one, so there is
+no separate desktop install.
 
 ## How the board actually works (the boring-but-important bit)
 
