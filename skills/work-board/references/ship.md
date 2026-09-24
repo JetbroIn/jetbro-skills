@@ -57,6 +57,7 @@ the outcome without digging through the PR.
   straightforward changes; don't narrate the obvious.
 - Note any **manual-verification evidence** (screenshot, the flow you drove) if you captured
   it, and anything the reviewer should specifically check.
+- List any **follow-up issues** you filed (follow-ups.md), with the column each went to.
 
 Keep it short and human — a few lines, matching the flexible, no-template spirit used
 elsewhere.
@@ -66,7 +67,8 @@ gh issue comment ISSUE_NUMBER --repo OWNER/REPO --body "✅ Done in PR #<pr>.
 
 <what was implemented, in plain language>
 <how — only if non-obvious>
-<what the reviewer should check / evidence, if any>"
+<what the reviewer should check / evidence, if any>
+<follow-ups filed, if any: #<n> (Backlog: why), #<n> (Ready)>"
 ```
 
 ## 7. Move the card onward — Agent QA if the board has it, else In Review

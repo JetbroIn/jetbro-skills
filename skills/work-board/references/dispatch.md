@@ -61,6 +61,9 @@ Give the agent a self-contained brief:
   `awaiting_review` (In Review).
 - The **ask-or-park** policy (see park.md) for blocking questions: surface up to the
   dispatcher; do not invent business decisions.
+- The **follow-up** policy (see follow-ups.md) for out-of-scope findings: file them as
+  issues rather than widening the PR, backlog if the team needs to discuss them, Ready if
+  they are minor and nobody would notice.
 - The reminder to **stay in the resolved repo** and never reach back to the parent
   framework's issues.
 
@@ -73,6 +76,9 @@ elsewhere" policy). If the user doesn't answer in reasonable time, the blocked i
 parked (park.md) and its agent stops; the rest continue.
 
 ## Merge coordination
+
+The dispatcher also claims each issue (claim.md) **before** spawning its agent, so the
+agent starts on a card no other session will touch.
 
 Even fully-independent branches merge to the same `main` **one at a time**, and CI runs per
 merge. The dispatcher serializes the actual merge step across agents so two PRs don't race
