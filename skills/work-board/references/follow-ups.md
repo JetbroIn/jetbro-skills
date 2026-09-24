@@ -73,3 +73,14 @@ the column you chose. Apply labels the repo already uses; don't invent new ones.
 - Report them to the dispatcher, which tells the user in the session, **backlog ones
   first**, since those are the ones waiting on a human. Say in one line why each backlog
   item needs the team.
+
+## When `/qa-board` uses this
+
+`/qa-board` files follow-ups by the same rule, for real bugs it notices outside the
+acceptance criteria while verifying a card. Two differences:
+
+- Skip the "in scope, fix it in this PR" check: QA never fixes code. A finding that breaks
+  an acceptance criterion is a QA failure, not a follow-up.
+- The provenance line reads `Found while QA-verifying #<N> (PR #<pr>).`, the follow-ups go
+  in the verdict comment instead of a completion comment, and they are reported in the
+  session instead of to a dispatcher.

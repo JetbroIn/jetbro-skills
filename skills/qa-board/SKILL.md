@@ -121,7 +121,8 @@ looks right.
 
 ### 8. Report
 
-Tell the user what passed, what failed and why, and what's still being checked. Lead with
+Tell the user what passed, what failed and why, what's still being checked, and any
+follow-up issues filed (Backlog ones first, with why they need the team). Lead with
 outcomes.
 
 ## Looping
