@@ -64,7 +64,18 @@ Found while building #<N> (PR #<pr>).
 ```
 
 Then place it on the board (board.md Steps 5–6): add it to the project, then set Status to
-the column you chose. Apply labels the repo already uses; don't invent new ones.
+the column you chose.
+
+**Labels.** Every follow-up, Backlog or Ready, gets the `claude-follow-up` label, so the
+team can filter to everything Claude filed and check its Backlog/Ready calls. Create the
+label once if the repo doesn't have it yet (`--force` makes this safe to re-run):
+
+```bash
+gh label create claude-follow-up --repo OWNER/REPO --color BFD4F2 \
+  --description "Filed by Claude while building or QA-ing another issue" --force
+```
+
+Beyond that one, apply only labels the repo already uses; don't invent new ones.
 
 ## Report it
 
