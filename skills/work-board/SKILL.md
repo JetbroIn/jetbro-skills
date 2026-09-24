@@ -1,6 +1,6 @@
 ---
 name: work-board
-description: Work the project board end to end. Finds Ready issues on the GitHub Projects v2 board, dispatches background worktree agents to build them, opens PRs in the team house style, reviews + CI + merges, closes issues, and moves cards to Agent QA (or In Review if the board has no Agent QA column). Can loop until you say stop. Only ever picks up work from the Ready column. Use when you want Claude to develop the outstanding issues on a phlo client project.
+description: Work the project board end to end. Finds Ready issues on the GitHub Projects v2 board, claims each with a comment so parallel sessions don't overlap, dispatches background worktree agents to build them, opens PRs in the team house style, reviews + CI + merges, closes issues, and moves cards to Agent QA (or In Review if the board has no Agent QA column). Can loop until you say stop. Only ever picks up work from the Ready column. Use when you want Claude to develop the outstanding issues on a phlo client project.
 user-invocable: true
 allowed-tools: Bash, Read, Grep, Glob, Agent, TaskCreate, TaskUpdate, TaskList, TaskOutput
 ---
@@ -68,6 +68,10 @@ Per `references/board.md` Step 7: the open issues whose card is in the `ready` r
 this repo. Show the user what you found before mutating anything. If nothing is Ready, stop
 here (or idle, if looping).
 
+Other engineers may be running `/work-board` on the same board. A Ready card with a **live
+`🔨 Claimed` comment** belongs to another session: skip it and tell the user, per
+`references/claim.md`.
+
 ### 3. Read each candidate issue in full
 For every issue you're considering picking up, read its **full record — body, all comments,
 and the timeline** per `references/issue-context.md`. The body is the opening statement, not
@@ -89,6 +93,9 @@ serial.
 
 ### 5. Pick up & dispatch
 For each issue you're starting:
+- **Claim it first** per `references/claim.md`: re-check it is still in Ready, post the
+  `🔨 Claimed by /work-board` comment, and confirm yours is the earliest live claim. If
+  another session got there first, back off and move on. Never dispatch without a claim.
 - Move its card to the `active` (In Progress) role — `references/board.md` Step 6.
 - Spawn a **background** build agent in its **own worktree**
   (`references/dispatch.md`) with a self-contained brief: the resolved repo, the issue's
@@ -108,6 +115,11 @@ the card onward — to `agent_qa` if the board has that column, otherwise to `aw
 (In Review). Merges are serialized across agents (`references/dispatch.md`). Agents **stop
 at that handoff** — `/qa-board` or a human takes it from there.
 
+Out-of-scope findings along the way (a nearby bug, a rough edge, something to discuss) become
+**follow-up issues** per `references/follow-ups.md`. The column is a judgment call: **backlog**
+if the engineering or business team needs to know or talk about it before it is built,
+**Ready** if it is a minor improvement or simple fix nobody would notice.
+
 ### 7. Questions → ask or park
 If a background agent hits a blocking business/technical question, follow
 `references/park.md`: relay it to the user in this session (one at a time), keep other work
@@ -117,7 +129,9 @@ that agent. **Never invent product decisions.**
 ### 8. Report
 Keep the user posted in this session: what got picked up, what merged and where it handed
 off to (Agent QA or In Review), what was a QA repair rather than fresh work, what's parked
-and why, what's still building. Lead with outcomes.
+and why, what's still building, any Ready cards skipped because another session claimed
+them, and follow-ups filed (backlog ones first, with why they need the team). Lead with
+outcomes.
 
 ## After the build
 
@@ -148,6 +162,8 @@ session responsive throughout — the loop is a heartbeat, not a blocker.
 
 ## References
 - `references/board.md` — Projects v2 discovery, fuzzy column mapping, the move mutation (verified GraphQL).
+- `references/claim.md`: the pickup claim comment that keeps parallel sessions off the same card.
+- `references/follow-ups.md`: filing out-of-scope findings: backlog if the team must discuss it, Ready if nobody would notice.
 - `references/issue-context.md` — reading an issue's full record: body + comments + timeline, before any decision.
 - `references/dispatch.md` — background worktree agents, conflict-risk check, merge coordination.
 - `references/ship.md` — PR house style, review, CI, merge, close, hand off to Agent QA or In Review.

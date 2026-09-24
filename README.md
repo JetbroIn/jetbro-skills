@@ -1,6 +1,6 @@
 # 🛠️ Jetbro Skills
 
-**v1.5.0**
+**v1.6.0**
 
 > Your GitHub board, but with a crew.
 
@@ -16,7 +16,7 @@ going to keep growing.
 |---|-------|---------|-----------------|
 | ✍️ | **`/write-issues`** | Turns a conversation into well-formed issues on the right board, column, and labels. A **sticky mode**: flip it on and the *whole session* is about writing issues until you flip it off. Read-only on your code, adaptive on format (no soul-crushing template). | The one who writes things down so you don't have to. |
 | 🧹 | **`/triage`** | Sweeps the open issues, flags dupes, suggests labels, and catches cards sitting in the wrong column (especially anything wrongly in **Ready**). Suggests everything, changes nothing without your say-so. | The tidy one. Slightly judgmental. Means well. |
-| 🚀 | **`/work-board`** | Does the actual work. Grabs **Ready** issues, spins up **background worktree agents** to build them in parallel, opens PRs in the house style, gets CI green, self-reviews, merges, comments on what it did, and slides the card to **Agent QA** (or **In Review** if you have no QA column). Can **loop until you say stop**. | The workhorse. Never touches anything that isn't Ready. |
+| 🚀 | **`/work-board`** | Does the actual work. Grabs **Ready** issues, claims each with a comment so teammates' sessions never double up, spins up **background worktree agents** to build them in parallel, opens PRs in the house style, gets CI green, self-reviews, merges, comments on what it did, files follow-ups (to Backlog if the team should weigh in, straight to Ready if it's a quiet fix), and slides the card to **Agent QA** (or **In Review** if you have no QA column). Can **loop until you say stop**. | The workhorse. Never touches anything that isn't Ready. |
 | 🔍 | **`/qa-board`** | Drains the **Agent QA** column. Reads each issue's **acceptance criteria** and actually proves them — reading the merged diff, running the suite, and when the criteria are about what a *user* sees, standing up Docker, opening a browser and driving the flow for real. Passes the card to **In Review**, or fails it with evidence and sends it back to **Ready**. Optional: no Agent QA column, no change. | The sceptic. Won't take your word for it. |
 | 📝 | **`/work-prd-update-board`** | Drains the **PRD Update** column. For each issue QA has signed off, it reads the shipped code and the merged PR, rewrites the stale bits of your PRD to match what actually got built, ships a docs-only PR, merges it, and moves the card to **Done**. Only runs on projects whose `CLAUDE.md` says they keep a PRD. | The one who reads the docs nobody else reads. |
 | 🔥 | **`/vibe-check`** | Reads the week (commits, PR titles, open issues) and gives you a fast, funny read on the mood. Roasts the *work*, never the people, then celebrates what shipped. Because we're not robots. | The comedian. Runs on Fridays. |

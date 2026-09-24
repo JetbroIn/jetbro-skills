@@ -24,6 +24,8 @@ flows do you want?"). Claude must not invent these answers. This is the policy.
    - Move the card to the **`parked`** (Todo/Backlog) column via board.md Step 6.
    - Move the issue back out of `active` — it is no longer being worked.
    - Leave the issue **open** (it's not done, just waiting).
+   - The `⏸️` comment also ends this session's claim (claim.md), so the card is free for
+     whoever picks it up once it's answered.
    - The build agent for this issue then stops; its worktree is cleaned up.
 4. **Never guess a business/product decision** to keep moving. Parking is the correct,
    safe outcome — the tap stays with the human. A parked issue re-enters the pipeline when
