@@ -82,6 +82,8 @@ fail. An unverifiable criterion is a finding in its own right, and it goes to a 
 ## Scope
 
 Verify **the acceptance criteria**, not the whole product. If you notice a genuine bug
-outside the criteria, mention it in the verdict comment as an observation (and suggest a
-new issue) — but do not fail the card for it. The criteria are the contract; failing a card
+outside the criteria, file it as a follow-up issue per
+`../../work-board/references/follow-ups.md` (Backlog if the team needs to know or discuss it,
+Ready only if it is a minor fix nobody would notice), and list it in the verdict comment
+with its number and column. Do not fail the card for it. The criteria are the contract; failing a card
 for something it never promised is how this stage loses the team's trust.

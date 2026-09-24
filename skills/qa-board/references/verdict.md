@@ -37,7 +37,8 @@ gh issue comment ISSUE_NUMBER --repo OWNER/REPO --body "✅ QA passed — all <N
 - [x] <criterion> — <how it was proven: file/lines, test name + result, or what was driven and seen>
 - [x] <criterion> — <evidence>
 
-Verified against PR #<pr>. <Anything the human reviewer should still look at.>"
+Verified against PR #<pr>. <Anything the human reviewer should still look at.>
+<Follow-ups filed, if any: #<n> (Backlog: why), #<n> (Ready)>"
 ```
 
 Then move the card to **`awaiting_review`** (`../../work-board/references/board.md` Step 6).
@@ -55,7 +56,8 @@ gh issue comment ISSUE_NUMBER --repo OWNER/REPO --body "❌ QA failed — <N> of
 - [ ] **<criterion that failed>** — <what you did, what you expected, what actually happened, with evidence>
 - [ ] **<criterion that failed>** — <evidence>
 
-Verified against PR #<pr>. Moving back to Ready for repair."
+Verified against PR #<pr>. Moving back to Ready for repair.
+<Follow-ups filed, if any: #<n> (Backlog: why), #<n> (Ready)>"
 ```
 
 Then:
