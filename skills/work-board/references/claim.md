@@ -41,9 +41,28 @@ dead and the card is free. A card whose latest marker is a `🔨 Claimed` commen
 
 When listing the Ready queue, read each card's comments (you already do, per
 `issue-context.md`) and **skip any card with a live claim**, even though it sits in Ready.
-Tell the user about it ("#42 is in Ready but @alice's session claimed it 2h ago"): that
-usually means a session died between claiming and moving the card, and a human should decide
-whether to release it. Never take over someone else's live claim on your own.
+Never take over someone else's live claim on your own.
+
+### Stale claims: ask after 2 hours
+
+A live claim on a card that is still in Ready usually means a session died between claiming
+and moving the card. Judge it by the time since the **last activity on the issue**: the
+claim itself, any later comment, or a linked PR or commit (the timeline, per
+`issue-context.md`).
+
+- **Under 2 hours:** treat it as live. Skip the card and mention it in the report.
+- **Over 2 hours:** ask the user in the session whether it's stale, with the facts they need:
+  "#42 is in Ready, claimed by @alice's session 5h ago, with no activity since. Treat the
+  claim as stale and pick it up?" Ask about one card at a time and keep other work going
+  while you wait.
+  - **Yes:** post a release on their behalf, then claim it the normal way (below):
+    ```bash
+    gh issue comment ISSUE_NUMBER --repo OWNER/REPO --body "↩️ Released by /work-board (@$ME): stale claim.
+
+    Claimed by @<them> <age> ago with no activity since; @$ME confirmed it was stale."
+    ```
+  - **No, or no answer:** leave it alone and skip it this pass. Don't ask about the same
+    claim again in this session unless there's new activity on it.
 
 A card in the `active` column is someone's work in progress, claim comment or not, so this
 skill never claims it from the Ready queue. The one exception is a card a human reviewer
