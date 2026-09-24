@@ -45,7 +45,10 @@ Tell the user about it ("#42 is in Ready but @alice's session claimed it 2h ago"
 usually means a session died between claiming and moving the card, and a human should decide
 whether to release it. Never take over someone else's live claim on your own.
 
-A card in the `active` column is also taken, claim comment or not. Never pick it up.
+A card in the `active` column is someone's work in progress, claim comment or not, so this
+skill never claims it from the Ready queue. The one exception is a card a human reviewer
+reopened and moved back to `active` (`ship.md` section 8): continuing that still needs a
+fresh claim before any build starts, since the previous one ended at `✅ Done`.
 
 ## Claim, then verify, then move
 
