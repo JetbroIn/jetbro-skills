@@ -83,3 +83,14 @@ agent starts on a card no other session will touch.
 Even fully-independent branches merge to the same `main` **one at a time**, and CI runs per
 merge. The dispatcher serializes the actual merge step across agents so two PRs don't race
 the same base. Building is parallel; merging is a single-file line.
+
+## End-of-run sweep
+
+Before the final report (and at the end of each pass when looping), the dispatcher reads
+the `active` column once more. Any card there whose issue is **closed** and has a
+**merged PR** that closes it has been bounced back after its hand-off (ship.md step 7
+explains how). Move each one to the hand-off column: `agent_qa` if the board has it,
+otherwise `awaiting_review`. Say so in the report.
+
+Leave every other `active` card alone: an **open** issue there is either still building
+or was reopened by a reviewer, and neither is yours to move.

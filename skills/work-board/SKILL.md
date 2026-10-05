@@ -109,11 +109,13 @@ For each issue you're starting:
 ### 6. Build → ship (in each background agent)
 Each agent follows `references/ship.md`: implement, self-review, get CI green, do a local
 check when the change has runtime surface, then — only when confident — merge (PR body says
-`Closes #N`, house-style title with the version bump), confirm the issue closed, **leave a
+`Closes #N`, house-style title with the version bump; the agent confirms GitHub has linked
+the PR to the issue before merging), confirm the issue closed, **leave a
 completion comment on the issue** (what was done, plus how only when non-obvious), and move
 the card onward — to `agent_qa` if the board has that column, otherwise to `awaiting_review`
-(In Review). Merges are serialized across agents (`references/dispatch.md`). Agents **stop
-at that handoff** — `/qa-board` or a human takes it from there.
+(In Review), re-checking about a minute later that the card stayed there. Merges are
+serialized across agents (`references/dispatch.md`). Agents **stop at that handoff** —
+`/qa-board` or a human takes it from there.
 
 Out-of-scope findings along the way (a nearby bug, a rough edge, something to discuss) become
 **follow-up issues** per `references/follow-ups.md`. The column is a judgment call: **backlog**
@@ -126,7 +128,12 @@ If a background agent hits a blocking business/technical question, follow
 going, and if it goes unanswered, comment on the issue + move the card to `parked` and stop
 that agent. **Never invent product decisions.**
 
-### 8. Report
+### 8. Sweep for bounced cards
+Before reporting (and at the end of each pass when looping), run the end-of-run sweep in
+`references/dispatch.md`: any **closed** issue with a merged PR whose card still sits in
+`active` gets moved to the hand-off column.
+
+### 9. Report
 Keep the user posted in this session: what got picked up, what merged and where it handed
 off to (Agent QA or In Review), what was a QA repair rather than fresh work, what's parked
 and why, what's still building, any Ready cards skipped because another session claimed
@@ -165,7 +172,7 @@ session responsive throughout — the loop is a heartbeat, not a blocker.
 - `references/claim.md`: the pickup claim comment that keeps parallel sessions off the same card.
 - `references/follow-ups.md`: filing out-of-scope findings: backlog if the team must discuss it, Ready if nobody would notice.
 - `references/issue-context.md` — reading an issue's full record: body + comments + timeline, before any decision.
-- `references/dispatch.md` — background worktree agents, conflict-risk check, merge coordination.
+- `references/dispatch.md` — background worktree agents, conflict-risk check, merge coordination, end-of-run sweep.
 - `references/ship.md` — PR house style, review, CI, merge, close, hand off to Agent QA or In Review.
 - `references/park.md` — the ask-or-park policy for blocking questions.
 - `references/qa-bounce.md` — picking up a card that failed automated QA: repair vs. escalate.

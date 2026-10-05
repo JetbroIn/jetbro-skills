@@ -207,6 +207,17 @@ stage: `ship.md` merges a PR that says `Closes #N`, so a card sitting in `agent_
 column, not the issue's state (see `issue-context.md` — a closed issue is a normal thing to
 read, not a dead end).
 
+## Board setup: turn off "Pull request linked to issue"
+
+Projects v2 ships a built-in workflow, **"Pull request linked to issue"**, that sets a
+card's Status (to In Progress by default) whenever a PR gets linked to its issue.
+Recommend that every board using `/work-board` turns it off (project menu, **Workflows**).
+The skill already moves the card to `active` on claim, so the workflow adds nothing, and
+because GitHub can register the link long after the PR merged, it can pull a shipped,
+closed card out of the hand-off column and back to In Progress. If you notice it enabled
+during discovery, tell the user; `ship.md` step 7 and the dispatcher's end-of-run sweep
+(`dispatch.md`) catch the bounce either way.
+
 ---
 
 ## Reference: verified example (Goldmine)

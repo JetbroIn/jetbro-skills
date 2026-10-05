@@ -41,9 +41,48 @@ with no runtime surface (docs, pure refactors covered by tests).
 
 Only when self-review is clean, CI is green, and any needed local check passed:
 
-- Coordinate with the dispatcher so merges don't race the same base (dispatch.md).
-- Merge the PR (respect the repo's merge style — squash/merge as the repo uses).
-- Because the body says `Closes #N`, merging **auto-closes the issue**. Confirm it closed.
+Coordinate with the dispatcher so merges don't race the same base (dispatch.md), then:
+
+**a. Confirm the PR is linked to its issue before merging.** `Closes #N` in the body is
+not enough on its own: GitHub can register the link hours late, and a merge without the
+link does not close the issue.
+
+```bash
+gh pr view PR_NUMBER --repo OWNER/REPO --json closingIssuesReferences \
+  --jq '.closingIssuesReferences[].number'
+```
+
+Every issue the PR closes must be listed. If one is missing, re-save the body to make
+GitHub re-parse it, then check again:
+
+```bash
+gh pr view PR_NUMBER --repo OWNER/REPO --json body --jq .body > "$TMPDIR/pr-body.md"
+gh pr edit PR_NUMBER --repo OWNER/REPO --body-file "$TMPDIR/pr-body.md"
+```
+
+Merge only once the link exists.
+
+**b. Merge with `--repo`.** Respect the repo's merge style (squash/merge as the repo uses):
+
+```bash
+gh pr merge PR_NUMBER --repo OWNER/REPO --squash --delete-branch
+```
+
+Always pass `--repo`, even from inside the checkout. Without it, `gh` tries to switch the
+local checkout to the default branch, which fails in a worktree with `'main' is already
+used by worktree`, and the remote branch is then left undeleted even though the merge
+went through. With `--repo`, `gh` skips the local switch and deletes the remote branch.
+
+**c. Give the issue up to about 60 seconds to close by itself.** Poll its state rather
+than closing it straight away:
+
+```bash
+gh issue view ISSUE_NUMBER --repo OWNER/REPO --json state --jq .state
+```
+
+With the link confirmed in (a) it normally closes within a few seconds. Only if it is
+still `OPEN` after about 60 seconds, close it by hand (`gh issue close ISSUE_NUMBER --repo
+OWNER/REPO`).
 
 ## 6. Leave a completion comment on the issue
 
@@ -81,6 +120,13 @@ board.md Step 6. **Where it goes depends on the board:**
   (or bounce it back to `ready`).
 - If the board has **no** `agent_qa` column, move it to **`awaiting_review`** (In Review),
   exactly as before.
+
+**Check the column again about 60 seconds later.** One read straight after the move is
+not enough. A board's built-in "Pull request linked to issue" workflow sets the card to
+In Progress whenever GitHub registers the PR link, and that can land after your move,
+pulling the already-closed card back to `active`. Wait about 60 seconds, read the card's
+Status again (board.md Step 5), and if it is no longer in the hand-off column, move it
+again and re-check once more.
 
 Either way this is the handoff point — the agent's own work ends here.
 

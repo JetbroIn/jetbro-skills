@@ -1,6 +1,6 @@
 # 🛠️ Jetbro Skills
 
-**v1.6.0**
+**v1.6.1**
 
 > Your GitHub board, but with a crew.
 
@@ -102,6 +102,11 @@ If you find a desktop path that works, please open an issue and we will document
   by accident. Name it "Agent QA" (or AI/Bot/Automated QA) to opt in.
 - Every issue lives a **double life**: its GitHub open/closed status *and* its board column
   are two different things. The skills keep them honest so you don't have to.
+- **Turn off the board's "Pull request linked to issue" workflow** (project menu,
+  **Workflows**). `work-board` already sets In Progress when it claims a card, so the
+  workflow adds nothing, and GitHub sometimes links a PR to its issue hours late, which
+  drags an already-shipped card from Agent QA back to In Progress. The skills re-check and
+  sweep for this, but it is simpler not to have the fight.
 - The golden rule: **each skill only ever picks up from its own column.** `work-board`
   drains Ready and stops at the handoff; `qa-board` drains Agent QA; `work-prd-update-board`
   drains PRD Update and stops at Done. None of them reaches into another's queue.
