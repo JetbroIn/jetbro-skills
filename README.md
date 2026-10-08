@@ -89,6 +89,48 @@ us in practice.
 So: add the marketplace once in the CLI, and the plugin is then available on that machine.
 If you find a desktop path that works, please open an issue and we will document it.
 
+## 📊 Mod: board counts
+
+Your board, always in the corner of your eye. **`board-counts`** is a *mod*: not a skill
+you call, but a small plugin that runs inside Claude Code for the whole session. It puts
+the live column counts in your status line:
+
+```
+Ready 4 · In Progress 2 · Agent QA 1
+```
+
+and a slim row of links above the prompt, each one clickable:
+
+```
+Goldmine: Board · Code · PRs
+```
+
+Want anything else (Backlog, In Review, who's on what)? Click **Board** and you're there.
+
+Install it from the same marketplace (add the marketplace first, as above):
+
+```
+/plugin install board-counts@jetbro-skills
+```
+
+It's separate from `jetbro-skills` on purpose, so it's opt-in. Install one, the other, or both.
+
+**How it works:**
+
+- **No trigger needed.** It starts with every session: it finds the board, shows the
+  counts, then re-polls every 60 seconds. "Live" means up to a minute behind, because
+  GitHub Projects has no push.
+- **It finds the board on its own**, the same way `/work-board` does: from the project
+  that this repo's recently updated issues actually sit on, never from the folder name.
+  Repo with no board? It shows nothing and stays out of the way.
+- **Columns are fuzzy-matched** with the same rules as the skills, so `To Do` counts as
+  Ready and a plain `QA` column is never mistaken for Agent QA. No Agent QA column on
+  your board? That count just isn't shown.
+- **`/board`** forces it: re-detects the board (handy after you `cd` into another
+  repo), refreshes the counts, and prints the three links.
+- It reads through your own `gh` login, so it sees exactly the boards you can see. Not
+  signed in, or offline? It keeps quiet and tries again on the next poll.
+
 ## How the board actually works (the boring-but-important bit)
 
 - **phlo** is our in-house framework (`enterpriseagentstack/phlo`). Client projects are
@@ -166,6 +208,15 @@ claude plugin validate /path/to/jetbro-skills
 
 New skills are welcome; this collection is meant to grow. Same shape as the others: a
 `SKILL.md` that stays short, with heavier detail tucked into `references/`.
+
+Mods live under `mods/<name>/`, each its own plugin with its own entry in
+`.claude-plugin/marketplace.json`. Run one from the folder, and check it before you ship:
+
+```
+claude --plugin-dir /path/to/jetbro-skills/mods/board-counts
+claude plugin validate /path/to/jetbro-skills/mods/board-counts
+claude plugin test /path/to/jetbro-skills/mods/board-counts
+```
 
 ## License
 

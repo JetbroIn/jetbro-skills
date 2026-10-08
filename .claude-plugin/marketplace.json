@@ -21,6 +21,21 @@
       "license": "MIT",
       "category": "workflow",
       "keywords": ["phlo", "github-projects", "workflow", "issues", "automation"]
+    },
+    {
+      "name": "board-counts",
+      "displayName": "Board Counts",
+      "version": "0.1.0",
+      "source": "./mods/board-counts",
+      "description": "A mod: live Ready / In Progress / Agent QA counts for this repo's board in the status line, plus Board, Code and PRs links above the prompt.",
+      "author": {
+        "name": "Jetbro",
+        "url": "https://github.com/JetbroIn"
+      },
+      "homepage": "https://github.com/JetbroIn/jetbro-skills",
+      "license": "MIT",
+      "category": "workflow",
+      "keywords": ["phlo", "github-projects", "mod", "status-line"]
     }
   ]
 }

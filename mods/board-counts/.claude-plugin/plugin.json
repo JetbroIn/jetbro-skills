@@ -1,0 +1,12 @@
+{
+  "name": "board-counts",
+  "version": "0.1.0",
+  "description": "Live Ready / In Progress / Agent QA counts for this repo's project board in the status line, with links to the board, code and PRs",
+  "author": {
+    "name": "Jetbro",
+    "url": "https://github.com/JetbroIn"
+  },
+  "homepage": "https://github.com/JetbroIn/jetbro-skills",
+  "license": "MIT",
+  "types": "./types/index.d.ts"
+}

@@ -1,3 +1,6 @@
 # write-issues sticky-mode flag files (session-scoped, never committed)
 .claude/.write-issues-mode*
 .DS_Store
+
+# types the engine writes beside a loaded mod (regenerated per Claude Code build)
+mods/*/.claude-plugin/types/
