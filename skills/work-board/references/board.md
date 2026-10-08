@@ -197,7 +197,8 @@ Which role, and whether to filter by issue state, depends on the skill:
 
 | Skill | Role it drains | Issue state |
 |-------|----------------|-------------|
-| `/work-board` | `ready` | **open** issues (not PRs) |
+| `/investigate-board` | `parked` + `ready`, **only** cards labeled `needs-investigation` | **open** |
+| `/work-board` | `ready`, skipping cards labeled `needs-investigation` | **open** issues (not PRs) |
 | `/qa-board` | `agent_qa` | **closed** — cards arrive here after their PR merged |
 | `/work-prd-update-board` | `prd_update` | **closed** |
 

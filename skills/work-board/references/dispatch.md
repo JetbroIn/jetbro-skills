@@ -54,7 +54,12 @@ Give the agent a self-contained brief:
 - The issue's **acceptance criteria**, called out as the bar the work will be measured
   against — on a board with an `agent_qa` column, `/qa-board` verifies exactly these before
   the card can move on.
-- Instruction to work in its **own worktree/branch** off the default branch.
+- Instruction to work in its **own worktree/branch** off the default branch. If the issue
+  has a `✅ Bug confirmed by /investigate-board` comment, the branch starts from its
+  `investigate/<N>-<slug>` branch instead: check it out, rebase it onto the default branch
+  if it has moved, and use it as the PR branch (so `--delete-branch` cleans it up on merge).
+  The failing test it carries ships with the fix and must go green. **Don't delete or loosen
+  that test** to get there; if it genuinely has to change, say why in the PR body.
 - The full **build → ship** procedure (see ship.md): implement, verify, open PR in house
   style, ensure CI passes, self-review, and — only when confident — merge, close the issue,
   and move the card onward — to `agent_qa` if the board has that column, otherwise to
