@@ -72,6 +72,10 @@ Other engineers may be running `/work-board` on the same board. A Ready card wit
 `🔨 Claimed` comment** belongs to another session: skip it and tell the user, per
 `references/claim.md`.
 
+A Ready card labeled **`needs-investigation`** is an unproven bug report: skip it and tell
+the user. `/investigate-board` removes the label once the bug is confirmed; building before
+then means building from a symptom.
+
 ### 3. Read each candidate issue in full
 For every issue you're considering picking up, read its **full record — body, all comments,
 and the timeline** per `references/issue-context.md`. The body is the opening statement, not
@@ -84,6 +88,12 @@ issues with repairs — and they are indistinguishable from the body alone. A `�
 comment, a prior `✅ Done in PR #N` comment, or a reopened issue all mean this was already
 built once. Handle those per `references/qa-bounce.md`: repair the specific failure rather
 than rebuilding, and escalate to a human instead when the failure needs a decision.
+
+**Check for a confirmed investigation too.** A `✅ Bug confirmed by /investigate-board`
+comment carries the root cause, a fix plan, and a failing test on an
+`investigate/<N>-<slug>` branch. Brief the build agent to build on that branch, so the
+test arrives with the fix and going from red to green is the proof it worked
+(`references/dispatch.md`).
 
 ### 4. Plan for conflicts
 Before doing anything, apply the conflict-risk check in `references/dispatch.md`. Decide

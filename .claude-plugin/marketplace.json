@@ -10,7 +10,7 @@
     {
       "name": "jetbro-skills",
       "displayName": "Jetbro Skills",
-      "version": "1.6.1",
+      "version": "1.7.0",
       "source": "./",
       "description": "Board-aware GitHub-issue workflow skills for phlo client projects.",
       "author": {

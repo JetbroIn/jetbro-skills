@@ -1,12 +1,12 @@
 # 🛠️ Jetbro Skills
 
-**v1.6.1**
+**v1.7.0**
 
 > Your GitHub board, but with a crew.
 
 A Claude Code plugin for the way we actually build **phlo** projects: issues on a board,
-work in a fork, ship to `main`. Seven skills that between them fill the board, keep it tidy,
-do the work, QA it, catch the docs up, tell you how the week went, and turn the session you
+work in a fork, ship to `main`. Eight skills that between them fill the board, keep it tidy,
+prove the bugs, do the work, QA it, catch the docs up, tell you how the week went, and turn the session you
 just had into improvements. The repo is both the plugin *and* its own marketplace, and it's
 going to keep growing.
 
@@ -16,6 +16,7 @@ going to keep growing.
 |---|-------|---------|-----------------|
 | ✍️ | **`/write-issues`** | Turns a conversation into well-formed issues on the right board, column, and labels. A **sticky mode**: flip it on and the *whole session* is about writing issues until you flip it off. Read-only on your code, adaptive on format (no soul-crushing template). | The one who writes things down so you don't have to. |
 | 🧹 | **`/triage`** | Sweeps the open issues, flags dupes, suggests labels, and catches cards sitting in the wrong column (especially anything wrongly in **Ready**). Suggests everything, changes nothing without your say-so. | The tidy one. Slightly judgmental. Means well. |
+| 🔬 | **`/investigate-board`** | Works the bugs nobody has proven yet: open issues labeled **`needs-investigation`** in **Backlog** or **Ready**. Reproduces each one for real, keeps a **hypothesis log** (what was suspected, what was ruled out, and why), traces the root cause down to the line and the PR that introduced it, and pins a confirmed bug down with a **failing test** pushed on an `investigate/` branch. Each card gets one verdict: confirmed (to **Ready** with a fix plan), not a bug, actually an enhancement, needs info (with specific questions for the reporter), or duplicate. Asks you before closing anything. Never fixes the bug itself, and `/work-board` won't build a card until the label is gone. | The detective. Won't let a hunch reach the build. |
 | 🚀 | **`/work-board`** | Does the actual work. Grabs **Ready** issues, claims each with a comment so teammates' sessions never double up, spins up **background worktree agents** to build them in parallel, opens PRs in the house style, gets CI green, self-reviews, merges, comments on what it did, files follow-ups (to Backlog if the team should weigh in, straight to Ready if it's a quiet fix), and slides the card to **Agent QA** (or **In Review** if you have no QA column). Can **loop until you say stop**. | The workhorse. Never touches anything that isn't Ready. |
 | 🔍 | **`/qa-board`** | Drains the **Agent QA** column. Reads each issue's **acceptance criteria** and actually proves them — reading the merged diff, running the suite, and when the criteria are about what a *user* sees, standing up Docker, opening a browser and driving the flow for real. Passes the card to **In Review**, or fails it with evidence and sends it back to **Ready**. Optional: no Agent QA column, no change. | The sceptic. Won't take your word for it. |
 | 📝 | **`/work-prd-update-board`** | Drains the **PRD Update** column. For each issue QA has signed off, it reads the shipped code and the merged PR, rewrites the stale bits of your PRD to match what actually got built, ships a docs-only PR, merges it, and moves the card to **Done**. Only runs on projects whose `CLAUDE.md` says they keep a PRD. | The one who reads the docs nobody else reads. |
@@ -32,6 +33,8 @@ It's an assembly line, and each skill is one station:
                                      (→ Agent QA)     (→ In Review)
                                           ↑                │
                                           └──── fails it ──┘  back to Ready, with evidence
+
+          🔬  investigate-board: a needs-investigation bug gets proven (red test → Ready) or closed out
 
                                     🔥  vibe-check — tells you how it all felt
                                     🪞  hansei: tells you what to change next time
